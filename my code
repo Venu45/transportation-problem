@@ -1,0 +1,152 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+vector<int >A;
+
+class edge{
+    public:
+        int X;
+        int Y;
+        int W;   // weight of edge
+    
+        edge(int x,int y,int w){
+            X = x;
+            Y = y;
+            W = w;
+        }
+    
+        bool find();
+};
+
+
+bool fun(edge e1, edge e2){
+    return (e1.W<e2.W);
+}
+
+int find(int s,vector<int >&v){
+    int kk = s;
+    vector<int > temp;
+    temp.push_back(s);
+    while(v[s]!=s){
+        s = v[s];
+        temp.push_back(s);
+    }
+    for(int jj=0;jj<temp.size();jj++){
+        v[temp[jj]] = s;
+    }
+    return s;
+}
+
+int main() {
+    int N,M;
+    int result = 0;
+    cin>>N>>M;
+    vector<int > tem;
+    for(int jj=0;jj<N;jj++){
+        tem.push_back(0);
+    }
+    vector<vector<int > > a;
+    for(int jj=0;jj<N;jj++){
+        a.push_back(tem);
+        A.push_back(jj);
+    }
+    int temp[2*M];
+    int x,y,t;
+    for(int jj=0;jj<M;jj++){
+        cin>>x>>y>>t;
+        if(t==0){
+            if(a[x][y] == 0 || a[x][y] == 2 || a[x][y] == 4 || a[x][y] == 6)
+                a[x][y] = a[x][y] + 1;
+            else{
+                result++;
+            }
+        }
+        else if(t==1){
+            if(a[x][y] == 0 || a[x][y] == 1 || a[x][y] == 4 || a[x][y] == 5)
+                a[x][y] = a[x][y] + 2;
+            else{
+                result++;
+            }
+        }
+        else if(t==2){
+            if(a[x][y] == 0 || a[x][y] == 1 || a[x][y] == 2 || a[x][y] == 3)
+                a[x][y] = a[x][y] + 4;
+            else{
+                result++;
+            }
+        }
+        temp[2*jj] = x;
+        temp[2*jj + 1] = y;
+    }
+    vector<edge >E;
+    int count = 0;
+    for(int jj=0;jj<M;jj++){
+        x = temp[2*jj];
+        y = temp[2*jj + 1];
+        if(a[x][y] == 1 || a[x][y] == 2){
+            result++;
+            a[x][y] = 0;
+        }
+        else if(a[x][y] == 4){
+            E.push_back(edge(x,y,1));
+            count++;
+            a[x][y] = 0;
+        }
+        else if(a[x][y] == 3){
+            E.push_back(edge(x,y,2));
+            count = count + 2;
+            a[x][y] = 0;
+        }
+        else if(a[x][y] == 5 || a[x][y] == 6){
+            E.push_back(edge(x,y,1));
+            result++;
+            count++;
+            a[x][y] = 0;
+        }
+        else if(a[x][y] == 7){
+            E.push_back(edge(x,y,1));
+            count++;
+            result = result + 2;
+            a[x][y] = 0;
+        }
+    }
+    sort(E.begin(),E.end(),fun);
+    int cost = 0;
+    int B[N] = {0};
+    for(int jj=0;jj<E.size();jj++){
+        x = E[jj].X;
+        y = E[jj].Y;
+        int w = E[jj].W;
+        int i = find(x,A);
+        int j = find(y,A);
+        if(i!=j){
+            cost = cost + w;
+            B[x]=1;
+            B[y]=1;
+            if(i>j){
+                A[j]=A[i];
+            }
+            else{
+                A[i] = A[j];
+            }
+        }
+    }
+    int flag = 0;
+    for(int jj =0;jj<N;jj++){
+        if(B[jj]==0)flag =1;
+    }
+    result = result + count - cost;
+    if(flag == 0)
+        cout<<result<<endl;
+    else cout<<"-1"<<endl;
+    
+    
+    
+    
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    return 0;
+}
