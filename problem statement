@@ -1,0 +1,50 @@
+Let there exist a country with N cities and M bidirectional roads connecting the cities. Each road is either of the following three types.
+
+Passenger transportation road (Type 0) - Only lets the passenger vehicles pass through.
+Cargo transportation road (Type 1)- Only lets the cargo vehicles pass through.
+Passenger + cargo transportation road (Type 2)- Lets Both passenger and cargo vehicles pass through.
+The cities are numbered from 0 to N-1.
+
+We need to find the maximum number of roads that can be closed down, and all the cities still remain connected for both passenger and cargo transportation.
+
+Input Format
+
+N M
+
+///M lines in the following format
+
+city1 city2 roadType
+
+Constraints
+
+1 ≤ N ≤ 10^5 1 ≤ M ≤ 10^5
+
+Output Format
+
+A single integer denoting the maximum number of roads that can be closed. If the cities cannot be connected, output -1.
+
+Sample Input 0
+
+3 7
+0 1 0
+1 2 0
+1 2 1
+1 2 0
+1 2 0
+0 1 2
+0 1 0
+Sample Output 0
+
+4
+Sample Input 1
+
+4 6
+0 1 0
+0 1 1
+1 2 1
+2 3 1
+0 1 2
+1 2 0
+Sample Output 1
+
+-1
